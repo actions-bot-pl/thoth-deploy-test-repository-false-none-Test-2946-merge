@@ -1,0 +1,18 @@
+name: 'Deploy OpenTelemetry'
+on:
+  push:
+    branches: main
+    paths:
+      - .github/workflows/**
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: otel-deploy-job
+    steps:
+      - uses: plengauer/Thoth/actions/instrument/deploy@6448880258e9a9ae7c103f818a2a48a8479da842
+        with:
+          github_token: '${{ secrets.DEPLOY_OBSERVABILITY_TOKEN }}' # TODO configure a token that has permissions to push contents and open pull requests
+          job_level_instrumentation_secret_redaction_strategy: none
+        env:
+          OTEL_EXPORTER_OTLP_ENDPOINT: http://48.214.53.180:8080
