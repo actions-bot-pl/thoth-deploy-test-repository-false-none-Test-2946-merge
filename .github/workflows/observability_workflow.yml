@@ -1,0 +1,19 @@
+
+name: OpenTelemetry
+on:
+  workflow_run:
+    workflows:
+      - Copilot code review
+      - Copilot coding agent
+      - Test
+    types:
+      - completed
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: plengauer/opentelemetry-github/actions/instrument/workflow@
+        env:
+          OTEL_EXPORTER_OTLP_ENDPOINT: http://48.214.53.180:8080
+    permissions:
+      actions: read
